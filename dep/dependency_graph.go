@@ -2,6 +2,7 @@ package dep
 
 import (
 	"fmt"
+	"os"
 
 	"gonum.org/v1/gonum/graph"
 	"gonum.org/v1/gonum/graph/simple"
@@ -177,3 +178,102 @@ func (i *Inducer) Induce(d *DependencyGraph, u graph.Node, fw, rv bool) {
 		i.Walk(reversed{d}, u, nil)
 	}
 }
+
+// This does not work if defined outside of 'Filter', why?
+// func (i *Inducer) Traverse(e graph.Edge) bool { i.Graph.SetEdge(e); return true }
+/*
+// This should allow to get the topological order from the DFS walk. However, we found
+// it not to provide valid result consistently. We are using topo.Sort until we guess
+// how to get a naive but valid order from here.
+// Also, this does not work if defined outside of 'Filter'
+func (i *Inducer) Visit(v graph.Node) {
+	i.Graph.schedule = append(i.Graph.schedule, v.ID())              // forward
+	i.Graph.schedule = append([]int64{v.ID()}, i.Graph.schedule...)  // reverse
+}
+*/
+
+// InduceAllIn induces a single subgraph that contain all and only the nodes given
+// in the list, and edges that have both ends between any of them.
+//
+// Complexity: ????
+func (d *DependencyGraph) InduceAllIn(ns map[int64]graph.Node) *DependencyGraph {
+	fmt.Println("This method is not implemented yet")
+	os.Exit(1)
+	return nil
+}
+
+// Reduce returns the transitive reduction of the dependency graph.
+//
+// Complexity: ????
+func (d *DependencyGraph) Reduce() *DependencyGraph {
+	//https://cs.stackexchange.com/questions/7096/transitive-reduction-of-dag
+	fmt.Println("This method is not implemented yet")
+	os.Exit(1)
+	return nil
+}
+
+// Closure return the transitive closure of the dependency graph.
+//
+// Complexity: ????
+func (d *DependencyGraph) Closure() *DependencyGraph {
+	/*
+		//A navie implementation can be:
+		for _, from := range graph.NodesOf(d.Nodes()) {
+			for _, to := range graph.NodesOf(d.Nodes()) {
+				if from != to && topo.PathExistsIn(d, from, to) && !simple.HasEdgeFromTo(from, to) {
+					d.SetEdge(d.Edge(from, to))
+				}
+			}
+		}
+
+		// But it's so bad that it is not worth uncommenting it.
+		// On the one hand, there is need to analyse N element in each loop
+		// On the other hand *PathExistsIn exists as a helper function. If many tests for path existence
+		// are being performed, other approaches will be more efficient. *
+	*/
+	fmt.Println("This method is not implemented yet")
+	os.Exit(1)
+	return nil
+}
+
+// Schedule returns a solution to the topological sorting of the dependency graph for:
+// [`p=0`] return unexported field 'schedule' if not nil,
+// [`p>1`] 'p' parallel/concurrent execution threads, or
+// [`p=-1`] return as many threads as the maximum number of concurrently executable tasks in the graph.
+//
+// Complexity: ????
+func (d *DependencyGraph) Schedule(p int64) [][]int64 {
+	fmt.Println("This method is not implemented yet")
+	os.Exit(1)
+	return nil
+}
+
+/*
+// This is an alternative implementation of Induce, which does not use `gonum/graph/traverse`.
+func subFromWalk(g graph.Directed) map[string]graph.Directed {
+	addNode := func(s graph.DirectedGraph, n graph.Node) {
+		if s.Node(n.ID()) == nil {
+			s.AddNode(n)
+		}
+	}
+	var walk func(g, s graph.DirectedGraph, n graph.Node) []graph.Node
+	walk = func(g, s graph.DirectedGraph, n graph.Node) []graph.Node {
+		addNode(s, n)
+		if l := graph.NodesOf(g.To(n.ID())); len(l) > 0 {
+			for _, x := range l {
+				addNode(s, x)
+				s.SetEdge(g.Edge(x.ID(), n.ID()))
+				walk(g, s, x)
+			}
+		}
+		return nil
+	}
+	o := make(map[string]graph.DirectedGraph)
+	for _, n := range getTargets(g) {
+		s := simple.NewDirectedGraph()
+		walk(g, s, n)
+		o[n.(*dot.DotNode).DOTID()] = s
+	}
+	return o
+}
+*/
