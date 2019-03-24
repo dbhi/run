@@ -1,6 +1,8 @@
 package dep
 
 import (
+	"fmt"
+
 	"gonum.org/v1/gonum/graph"
 	"gonum.org/v1/gonum/graph/simple"
 	"gonum.org/v1/gonum/graph/topo"
@@ -14,7 +16,8 @@ type DependencyGraph struct {
 	leafs map[int64]graph.Node
 }
 
-// NewDependencyGraph returns a DependencyGraph.
+// NewDependencyGraph returns a DependencyGraph. If 'g' is nil, a new graph is created
+// with 'simple.NewDirectedGraph'.
 func NewDependencyGraph(g *simple.DirectedGraph) *DependencyGraph {
 	if g != nil {
 		return &DependencyGraph{g, nil, nil}
@@ -22,7 +25,9 @@ func NewDependencyGraph(g *simple.DirectedGraph) *DependencyGraph {
 	return &DependencyGraph{simple.NewDirectedGraph(), nil, nil}
 }
 
-// Sort returns the topological order computed through topo.Sort
+// Sort returns the topological order computed through 'topo.Sort', which implements reversed
+// Tarjan SCC. On failure, the set or sets of nodes that are in directed cycles are provided,
+// i.e. circular dependencies in the graph.
 func (d *DependencyGraph) Sort() ([]graph.Node, error) {
 	return topo.Sort(d)
 }
@@ -89,36 +94,46 @@ func (d *DependencyGraph) IsLeaf(id int64) bool {
 	return ok
 }
 
+// IsMid returns true if the given id corresponds to a mid node (i.e. neither a root nor a leaf).
+//
+// Complexity: O(2) or O(V)
+func (d *DependencyGraph) IsMid(id int64) bool {
+	return !(d.IsRoot(id) || d.IsLeaf(id))
+}
+
 // Induce induces a different subgraph for each of the given nodes of the dependency
-// graph, where the node is any vertex:
-//  [root] walk forward
-//  [leaf] walk reverse
-//  [mid]  walk first forward and then walk reverse
+// graph, where the node is a root (walk forward) or a leaf (reverse walk).
 //
 // Complexity: O(len(ns) * (V + E))
-//
-// TODO For mid nodes (!leafs && !roots), allow the user to select the direction of the
-// walk (forward, reverse or both).
 func (d *DependencyGraph) Induce(ns map[int64]graph.Node) map[int64]*DependencyGraph {
+	return d.induce(ns, func(n graph.Node) bool { return d.IsRoot(n.ID()) }, func(n graph.Node) bool { return d.IsLeaf(n.ID()) })
+}
+
+// InduceDir induces a different subgraph for each of the given nodes of the dependency
+// graph, where the node can be any vertex (root, leaf or mid). It is possible to
+// traverse the graph forward, in reverse or in both directions. Not that the following
+// contexts will produce a subgraph with a single node:
+//  - a root node with reverse walk only
+//  - a leaf node with forward walk only
+//  - any node with neither forward nor reverse walk. a warning is shown in this case.
+//
+// Complexity: O(len(ns) * (V + E))
+func (d *DependencyGraph) InduceDir(ns map[int64]graph.Node, fw, rv bool) map[int64]*DependencyGraph {
+	return d.induce(ns, func(n graph.Node) bool { return fw }, func(n graph.Node) bool { return rv })
+}
+
+func (d *DependencyGraph) induce(ns map[int64]graph.Node, fw, rv func(n graph.Node) bool) map[int64]*DependencyGraph {
+	d.rootsAndLeafs()
 	o := make(map[int64]*DependencyGraph)
 	var w Inducer
 	for _, u := range ns {
-		w.Reset()
-		w.Graph = NewDependencyGraph(nil)
-		w.Graph.AddNode(u)
-		if !d.IsLeaf(u.ID()) {
-			w.Filter(d, u, false)
-			w.Reset()
-		}
-		if !d.IsRoot(u.ID()) {
-			w.Filter(d, u, true)
-		}
+		w.Induce(d, u, fw(u), rv(u))
 		o[u.ID()] = w.Graph
 	}
 	return o
 }
 
-// Inducer is a wrapper around traverse.DepthFirst to induce a subgraph from a dependency
+// Inducer is a wrapper around 'traverse.DepthFirst' to induce a subgraph from a dependency
 // graph; a kind of directed acyclic graph (DAG).
 type Inducer struct {
 	traverse.DepthFirst
@@ -131,13 +146,24 @@ func NewInducer(d *DependencyGraph) *Inducer {
 	return &Inducer{DepthFirst: t, Graph: d}
 }
 
-// Filter walks a graph starting from a given node and copies all the traversed edges
-// and nodes touched by them, to a induced subgraph.
-func (i *Inducer) Filter(d *DependencyGraph, u graph.Node, rv bool) {
+// Induce walks a graph starting from a given node and generates a subgraph by copying all the
+// traversed edges (and the nodes touched by them). 'fw' and 'rv' allow to select whether a
+// forward walk is executed, a reverse walk or both of them.
+func (i *Inducer) Induce(d *DependencyGraph, u graph.Node, fw, rv bool) {
+	if !(fw || rv) {
+		fmt.Println("Induce called with fw=false and rv=false. This might be a mid vertex. Consider using InduceDir instead")
+	}
+	i.Reset()
+	i.Graph = NewDependencyGraph(nil)
+	i.Graph.AddNode(u)
 	i.EdgeFilter = func(e graph.Edge) bool { i.Graph.SetEdge(e); return true }
-	if rv { // Walk the graph backwards.
-		i.Walk(reversed{d}, u, nil)
-	} else {
+	if fw {
 		i.Walk(d, u, nil)
+		if rv {
+			i.Reset()
+		}
+	}
+	if rv {
+		i.Walk(reversed{d}, u, nil)
 	}
 }
