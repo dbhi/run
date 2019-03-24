@@ -39,10 +39,15 @@ in the subgraphs corresponding to the leaf. It can be either of:
 	Run: func(_ *cobra.Command, args []string) {
 		s, err := lib.GetSubgraphs(v.GetString("file"), false)
 		CheckErr(err)
-		t := lib.GetTaskListAll(s)
-		fmt.Println(t)
-		//g := dot.Load()
-		//fmt.Printf("%+v\n", g)
+		for k, _ := range s {
+			fmt.Println(k)
+		}
+		d, ok := s["happ"]
+		if ok {
+			l := lib.GetTaskList(d, "ghdl -a [UUT]")
+			fmt.Println(l)
+		}
+		//t := lib.GetTaskListAll(s)
 	},
 }
 
