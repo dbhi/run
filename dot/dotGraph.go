@@ -25,6 +25,15 @@ func (g DotGraph) NewEdge(from, to graph.Node) graph.Edge {
 	return &dotEdge{Edge: g.DirectedGraph.NewEdge(from, to), attrs: make(map[string]string)}
 }
 
+func (g DotGraph) GetNodeByDOTID(DOTID string) graph.Node {
+	for _, n := range graph.NodesOf(g.Nodes()) {
+		if n.(*DotNode).DOTID() == DOTID {
+			return n
+		}
+	}
+	return nil
+}
+
 // DotNode handles basic DOT serialisation and deserialisation
 type DotNode struct {
 	graph.Node
