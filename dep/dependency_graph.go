@@ -156,7 +156,7 @@ func (i *Inducer) Induce(d *DependencyGraph, u graph.Node, fw, rv bool) {
 	i.Reset()
 	i.Graph = NewDependencyGraph(nil)
 	i.Graph.AddNode(u)
-	i.EdgeFilter = func(e graph.Edge) bool { i.Graph.SetEdge(e); return true }
+	i.Traverse = func(e graph.Edge) bool { i.Graph.SetEdge(e); return true }
 	if fw {
 		i.Walk(d, u, nil)
 		if rv {
