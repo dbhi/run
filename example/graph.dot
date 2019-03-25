@@ -1,0 +1,37 @@
+strict digraph {
+// Node definitions.
+srcA     [label="srcA"     type="SRC"];
+srcB     [label="srcB"     type="SRC"];
+srcC     [label="srcC"     type="SRC"];
+srcDoc   [label="srcDoc"   type="SRC"];
+getA     [label="getA"     type="JOB"];
+buildA   [label="buildA"   type="JOB"];
+buildB   [label="buildB"   type="JOB"];
+buildDoc [label="buildDoc" type="JOB"];
+build    [label="build"    type="JOB"];
+objA     [label="objA"     type="OBJ"];
+objB     [label="objB"     type="OBJ"];
+doc      [label="doc"      type="OBJ"];
+bin      [label="bin"      type="OBJ"];
+// Edge definitions.
+getA -> srcA -> buildA -> objA -> build -> bin;
+srcB -> buildB -> objB -> build;
+objA -> buildB;
+srcC -> build;
+srcDoc -> buildDoc -> doc;
+}
+
+/*
+Certainly, it is possible to express the same dependency graph removing all the nodes
+which are not of type `job`:
+
+strict digraph {
+// Edge definitions.
+getA -> buildA -> build;
+buildB -> build;
+buildDoc;
+}
+
+However, this requires to define sources for each job through the `config.json` file.
+This is not supported yet.
+*/
