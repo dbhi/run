@@ -2,12 +2,53 @@ package lib
 
 import (
 	"fmt"
+	"io/ioutil"
 	"log"
+	"os"
 
 	"github.com/umarcor/run/dep"
 	"github.com/umarcor/run/dot"
 	"gonum.org/v1/gonum/graph"
 )
+
+func ReadFile(f string) ([]byte, error) {
+	if len(f) == 0 {
+		src := `strict digraph {
+// Node definitions.
+A [label="yellow"];
+B [label="green"];
+C [label="red"];
+D [label="blue"];
+E [label="magenta"];
+F [label="purple"];
+// Edge definitions.
+A -> B;
+A -> C -> E -> F;
+C -> D;
+B -> F;
+B -> E;
+}`
+		fmt.Println("Empty file path! Please provide a DOT file")
+		fmt.Println("Using the following content as an example:")
+		fmt.Println(src)
+		return []byte(src), nil
+		//return nil, fmt.Errorf("Empty file path! Please provide a DOT file")
+	}
+	jf, err := os.Open(f)
+	if err != nil {
+		return nil, err
+	}
+	defer jf.Close()
+	return ioutil.ReadAll(jf)
+}
+
+func WriteFile(f string, g *dep.DependencyGraph) error {
+	if b := dot.Marshal(g); b != nil {
+		fmt.Printf("Writing graph to '%s'\n", f)
+		return ioutil.WriteFile(f, b, 0644)
+	}
+	return fmt.Errorf("Marshal failed for file %s", f)
+}
 
 func PrintGraph(g *dep.DependencyGraph) {
 	for _, n := range graph.NodesOf(g.Nodes()) {
@@ -19,7 +60,7 @@ func PrintGraph(g *dep.DependencyGraph) {
 }
 
 func GetSubgraphs(f string, rv bool) (map[string]*dep.DependencyGraph, error) {
-	b, err := dot.ReadFile(f)
+	b, err := ReadFile(f)
 	if err != nil {
 		return nil, err
 	}

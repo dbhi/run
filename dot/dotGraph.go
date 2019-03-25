@@ -2,8 +2,6 @@ package dot
 
 import (
 	"fmt"
-	"io/ioutil"
-	"os"
 
 	"gonum.org/v1/gonum/graph"
 	"gonum.org/v1/gonum/graph/encoding"
@@ -108,35 +106,4 @@ func Marshal(g graph.Graph) []byte {
 		return nil
 	}
 	return b
-}
-
-func ReadFile(f string) ([]byte, error) {
-	if len(f) == 0 {
-		src := `strict digraph {
-// Node definitions.
-A [label="yellow"];
-B [label="green"];
-C [label="red"];
-D [label="blue"];
-E [label="magenta"];
-F [label="purple"];
-// Edge definitions.
-A -> B;
-A -> C -> E -> F;
-C -> D;
-B -> F;
-B -> E;
-}`
-		fmt.Println("Empty file path! Please provide a DOT file")
-		fmt.Println("Using the following content as an example:")
-		fmt.Println(src)
-		return []byte(src), nil
-		//return nil, fmt.Errorf("Empty file path! Please provide a DOT file")
-	}
-	jf, err := os.Open(f)
-	if err != nil {
-		return nil, err
-	}
-	defer jf.Close()
-	return ioutil.ReadAll(jf)
 }

@@ -8,8 +8,6 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/umarcor/run/lib"
-
 	au "github.com/logrusorgru/aurora"
 	homedir "github.com/mitchellh/go-homedir"
 	v "github.com/spf13/viper"
@@ -35,20 +33,6 @@ in the subgraphs corresponding to the leaf. It can be either of:
 - 'DOTID>' tasks that depend on DOTID.
 - '>DOTID>' tasks that allow to build DOTID and those that depend on it.
 `,
-	Args: cobra.ArbitraryArgs,
-	Run: func(_ *cobra.Command, args []string) {
-		s, err := lib.GetSubgraphs(v.GetString("file"), false)
-		CheckErr(err)
-		for k, _ := range s {
-			fmt.Println(k)
-		}
-		d, ok := s["happ"]
-		if ok {
-			l := lib.GetTaskList(d, "ghdl -a [UUT]")
-			fmt.Println(l)
-		}
-		//t := lib.GetTaskListAll(s)
-	},
 }
 
 var cfgFile string
@@ -60,7 +44,7 @@ func Execute() {
 	rootCmd.SetVersionTemplate("RUN {{printf \"version %s\" .Version}}\n")
 	fmt.Println(au.Sprintf(au.Cyan("[RUN] a task execution automation package (%s)"), rootCmd.Version))
 	err := rootCmd.Execute()
-	CheckErr(err)
+	checkErr(err)
 }
 
 func init() {
@@ -73,12 +57,12 @@ func init() {
 	// Define flags and defaults
 	f.StringVarP(&cfgFile, "config", "c", "", "config file (defaults are './.run[ext]', '$HOME/.run[ext]' or '/etc/run/.run[ext]')")
 	flagP("log", "l", "stdout", "errors logger; can use 'stdout', 'stderr' or file")
-	flagP("file", "f", "", "input DOT file")
-	//flagP("output", "o", "", "output ('stdout' or file)")
+	flagP("graph", "g", "", "input DOT graph file")
+	flagP("output", "o", "", "output ('stdout' or path)")
 
 	// Bind the full flag set to the configuration
 	err := v.BindPFlags(f)
-	CheckErr(err)
+	checkErr(err)
 }
 
 // initConfig reads in config file and ENV variables if set.
@@ -90,7 +74,7 @@ func initConfig() {
 	} else {
 		// Find home directory.
 		home, err := homedir.Dir()
-		CheckErr(err)
+		checkErr(err)
 
 		v.AddConfigPath(".")
 		v.AddConfigPath(home)
@@ -105,7 +89,7 @@ func initConfig() {
 	if err := v.ReadInConfig(); err != nil {
 		// Fail with invalid config format
 		if _, ok := err.(v.ConfigParseError); ok {
-			CheckErr(err)
+			checkErr(err)
 		}
 	} else {
 		log.Println("Using config file:", v.ConfigFileUsed())
@@ -132,7 +116,7 @@ func initConfig() {
 	}
 	cmd := exec.Command("cat", "/proc/self/cgroup")
 	o, err := cmd.CombinedOutput()
-	CheckErr(err)
+	checkErr(err)
 	if strings.Contains(string(o), "docker") {
 		log.Println("It seems you are running RUN CLI inside Docker a container")
 		v.Set("indocker", true)

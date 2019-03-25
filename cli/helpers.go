@@ -40,7 +40,7 @@ func FlagFuncs(f *pflag.FlagSet) (flag func(k string, i interface{}, u string), 
 	return
 }
 
-func CheckErr(err error) {
+func checkErr(err error) {
 	if err != nil {
 		fmt.Println(au.Red(err))
 		os.Exit(1)
@@ -50,7 +50,7 @@ func CheckErr(err error) {
 func ExecTimedCmd(bin string, args []string, cmdOut, cmdErr *bytes.Buffer) {
 	time_path, err := exec.LookPath("time")
 	if err != nil {
-		CheckErr(fmt.Errorf("Please, install 'time': %s", err))
+		checkErr(fmt.Errorf("Please, install 'time': %s", err))
 	}
 	ExecCmd(time_path, append([]string{"-v", bin}, args...), cmdOut, cmdErr)
 }
@@ -74,7 +74,7 @@ func ExecCmd(bin string, args []string, cmdOut, cmdErr *bytes.Buffer) {
 	} {
 		reader, err := v.rc()
 		if err != nil {
-			CheckErr(fmt.Errorf("Error creating Std*Pipe for Cmd: %s", err))
+			checkErr(fmt.Errorf("Error creating Std*Pipe for Cmd: %s", err))
 		}
 		go func(s *bufio.Scanner, b *bytes.Buffer) {
 			for s.Scan() {
@@ -88,7 +88,7 @@ func ExecCmd(bin string, args []string, cmdOut, cmdErr *bytes.Buffer) {
 	}
 	err := cmd.Run()
 	if err != nil {
-		CheckErr(fmt.Errorf("Error running Cmd: %s", err))
+		checkErr(fmt.Errorf("Error running Cmd: %s", err))
 	}
 	for i := 0; i < 2; i++ {
 		<-done
