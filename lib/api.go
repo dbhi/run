@@ -115,6 +115,9 @@ func taskSubgraph(g *dep.DependencyGraph, t string) *dep.DependencyGraph {
 	if r == nil {
 		log.Fatal("node %s not found in graph with leafs %s", t, g.Leafs())
 	}
+
+	//If you add a `func (n dotNode) String() string { return n.DOTID() }` method, then fmt.Sprint(n) or similar with give you the name in the printout.
+
 	// FIXME Check if the task generates some output. If so, let the output node be the target leaf.
 	i := g.InduceDir(map[int64]graph.Node{r.ID(): r}, false, true)
 	s, ok := i[r.ID()]
