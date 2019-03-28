@@ -37,14 +37,14 @@ var induceCmd = &cobra.Command{
 					fmt.Printf("subgraph for node '%s' not found\n", a)
 					continue
 				}
-				if e := lib.WriteFile(path.Join(o, a), d); e != nil {
+				if e := lib.WriteFile(path.Join(o, a+".dot"), d); e != nil {
 					log.Fatal(err)
 				}
 			}
 			return
 		}
 		for a, d := range s {
-			if e := lib.WriteFile(path.Join(o, a), d); e != nil {
+			if e := lib.WriteFile(path.Join(o, a+".dot"), d); e != nil {
 				log.Fatal(err)
 			}
 		}
