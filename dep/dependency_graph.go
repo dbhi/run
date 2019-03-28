@@ -28,6 +28,8 @@ func NewDependencyGraph(g *simple.DirectedGraph) *DependencyGraph {
 // Sort returns the topological order computed through 'topo.Sort', which implements reversed
 // Tarjan SCC. On failure, the set or sets of nodes that are in directed cycles are provided,
 // i.e. circular dependencies in the graph.
+//
+// Complexity: O(V,E)
 func (d *DependencyGraph) Sort() ([]graph.Node, error) {
 	return topo.Sort(d)
 }
