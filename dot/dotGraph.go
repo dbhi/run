@@ -14,15 +14,17 @@ type DotGraph struct {
 	*simple.DirectedGraph
 }
 
-// NewNode returns a new unique Node to be added to g. The Node contains the attributes.
+// NewNode returns a new Node to be added to g. The Node contains the attributes.
 func (g DotGraph) NewNode() graph.Node {
 	return &DotNode{Node: g.DirectedGraph.NewNode(), attrs: make(map[string]string)}
 }
 
+// NewNode returns a new Edge to be added to g. The Edge contains the attributes.
 func (g DotGraph) NewEdge(from, to graph.Node) graph.Edge {
 	return &dotEdge{Edge: g.DirectedGraph.NewEdge(from, to), attrs: make(map[string]string)}
 }
 
+// GetNodeByDOTID gets a Node by it's DOT ID.
 func (g DotGraph) GetNodeByDOTID(DOTID string) graph.Node {
 	for _, n := range graph.NodesOf(g.Nodes()) {
 		if n.(*DotNode).DOTID() == DOTID {
@@ -45,8 +47,13 @@ func (n *DotNode) SetAttribute(attr encoding.Attribute) error {
 	return nil
 }
 
-func (n *DotNode) DOTID() string      { return n.dotID }
+// DOTID gets the DOT attribute.
+func (n *DotNode) DOTID() string { return n.dotID }
+
+// SetDOTID sets the DOT ID.
 func (n *DotNode) SetDOTID(id string) { n.dotID = id }
+
+// Attributes gets the slice of attributes defined for the node.
 func (n *DotNode) Attributes() []encoding.Attribute {
 	attrs := make([]encoding.Attribute, 0, len(n.attrs))
 	for k, v := range n.attrs {
@@ -77,6 +84,7 @@ func (e *dotEdge) SetAttribute(attr encoding.Attribute) error {
 	return nil
 }
 
+// Attributes gets the slice of attributes defined for the edge.
 func (e *dotEdge) Attributes() []encoding.Attribute {
 	attrs := make([]encoding.Attribute, 0, len(e.attrs))
 	for k, v := range e.attrs {
@@ -85,6 +93,7 @@ func (e *dotEdge) Attributes() []encoding.Attribute {
 	return attrs
 }
 
+// ReversedEdge returns a new Edge with the end point of the edges in the pair swapped.
 func (e *dotEdge) ReversedEdge() graph.Edge {
 	return &dotEdge{Edge: e.Edge.ReversedEdge(), attrs: e.attrs}
 }
