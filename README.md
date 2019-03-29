@@ -40,9 +40,9 @@ run induce -c config.json -o subgraphs leafs
 Generates a DOT subgraph in subdir `subgraphs` for each of the leafs in in `graph.dot`. Each subgraph includes only the dependencies required to build the corresponding leaf.
 
 > WIP:
-> - allow to induce the graph of a single leaf.
-> - allow to induce the graph of the nodes that depend on a root.
-> - allow to induce the graph of a single root.
+> - [x] allow to induce the graph of a single leaf.
+> - [x] allow to induce the graph of the nodes that depend on a root.
+> - [x] allow to induce the graph of a single root.
 > - allow to induce the graph of a mid node (either forward, reverse or both).
 
 > HINT: the subgraphs can be shown in a web frontend, so the user can select to visualize all the dependecies or to choose a single target and show the corresponding subgraph.

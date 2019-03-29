@@ -26,7 +26,7 @@ var rootCmd = &cobra.Command{
 	Short:   au.Sprintf(au.Cyan("[RUN] a task execution automation package")),
 	Long: `A task execution automation package for complex dependency graphs.
 Currently only DOT files are supported as input. To retrieve the ordered list of
-tasks for a given target, use the following syntax 'leaf[:task]'. The optional
+tasks for a given target, use the following syntax 'leaf[|task]'. The optional
 argument 'task' allows to filter the list to include only a subset of the tasks
 in the subgraphs corresponding to the leaf. It can be either of:
 - '>DOTID' tasks that allow build DOTID.
@@ -118,7 +118,7 @@ func initConfig() {
 	o, err := cmd.CombinedOutput()
 	checkErr(err)
 	if strings.Contains(string(o), "docker") {
-		log.Println("It seems you are running RUN CLI inside Docker a container")
+		log.Println("It seems you are running RUN CLI inside a Docker container")
 		v.Set("indocker", true)
 	}
 }
