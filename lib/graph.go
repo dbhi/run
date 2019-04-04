@@ -73,16 +73,19 @@ func PrintGraph(g *dep.DependencyGraph) {
 	}
 }
 
-func InduceSubGraphs(f string) (map[string]*dep.DependencyGraph, map[string]*dep.DependencyGraph) {
+func InduceSubGraphsFromFile(f string) (map[string]*dep.DependencyGraph, map[string]*dep.DependencyGraph) {
 	if len(f) == 0 {
 		_, err := os.Stat("graph.dot")
 		if err == nil {
 			f = "graph.dot"
 		}
 	}
-
 	d, err := ReadGraphFromFile(f)
 	checkErr(err)
+	return InduceSubGraphs(d)
+}
+
+func InduceSubGraphs(d *dep.DependencyGraph) (map[string]*dep.DependencyGraph, map[string]*dep.DependencyGraph) {
 	induce := func(d *dep.DependencyGraph, m map[int64]graph.Node) map[string]*dep.DependencyGraph {
 		o := make(map[string]*dep.DependencyGraph)
 		for k, n := range d.Induce(m) {
@@ -95,7 +98,7 @@ func InduceSubGraphs(f string) (map[string]*dep.DependencyGraph, map[string]*dep
 }
 
 func Induce(f, o string, args []string) {
-	l, r := InduceSubGraphs(f)
+	l, r := InduceSubGraphsFromFile(f)
 	if len(l) == 0 || len(r) == 0 {
 		log.Fatal("Something went wrong. Empty subgraph map!")
 	}

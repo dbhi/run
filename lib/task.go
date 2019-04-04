@@ -85,7 +85,7 @@ func GetTaskList(d *dep.DependencyGraph) []string {
 */
 
 func List(f string, args []string) {
-	l, r := InduceSubGraphs(f)
+	l, r := InduceSubGraphsFromFile(f)
 	if len(l) == 0 || len(r) == 0 {
 		log.Fatal("Something went wrong. Empty subgraph map!")
 	}
@@ -114,3 +114,9 @@ func List(f string, args []string) {
 		*/
 	}
 }
+
+/*
+func ListFromFile(f string, args []string) {
+	l, r := InduceSubGraphsFromFile(f)
+}
+*/
