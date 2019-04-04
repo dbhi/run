@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 
 	"github.com/umarcor/cobra"
-	"github.com/umarcor/run/lib"
+	"github.com/dbhi/run/lib"
 )
 
 // execCmd represents the exec command

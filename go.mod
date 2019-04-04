@@ -1,4 +1,4 @@
-module github.com/umarcor/run
+module github.com/dbhi/run
 
 go 1.12
 

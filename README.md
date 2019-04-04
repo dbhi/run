@@ -3,9 +3,9 @@
 </p>
 
 <p align="center">
-  <a title="GoDoc" href="https://godoc.org/github.com/umarcor/run/lib"><img src="https://img.shields.io/badge/godoc-reference-5272B4.svg?longCache=true&style=flat-square&logo=go&logoColor=fff"></a><!--
+  <a title="GoDoc" href="https://godoc.org/github.com/dbhi/run/lib"><img src="https://img.shields.io/badge/godoc-reference-5272B4.svg?longCache=true&style=flat-square&logo=go&logoColor=fff"></a><!--
   -->
-  <a title="Releases" href="https://github.com/umarcor/run/releases"><img src="https://img.shields.io/github/commits-since/umarcor/run/latest.svg?longCache=true&style=flat-square"></a>
+  <a title="Releases" href="https://github.com/dbhi/run/releases"><img src="https://img.shields.io/github/commits-since/dbhi/run/latest.svg?longCache=true&style=flat-square"></a>
 </p>
 
 ---

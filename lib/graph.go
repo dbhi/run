@@ -8,8 +8,8 @@ import (
 	"path"
 	"strings"
 
-	"github.com/umarcor/run/dep"
-	"github.com/umarcor/run/dot"
+	"github.com/dbhi/run/dep"
+	"github.com/dbhi/run/dot"
 	"gonum.org/v1/gonum/graph"
 )
 

@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/umarcor/run/dep"
-	"github.com/umarcor/run/dot"
+	"github.com/dbhi/run/dep"
+	"github.com/dbhi/run/dot"
 )
 
 type Task struct {

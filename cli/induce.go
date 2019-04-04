@@ -3,7 +3,7 @@ package main
 import (
 	v "github.com/spf13/viper"
 	"github.com/umarcor/cobra"
-	"github.com/umarcor/run/lib"
+	"github.com/dbhi/run/lib"
 )
 
 // induceCmd represents the induce command
