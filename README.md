@@ -14,7 +14,7 @@
 
 `run/lib` is meant to be used imported to other [golang](https://golang.org/) projects, such as CLI tools or web services. This allows golang developers to make the best of third-party libraries to process data and handle parallel (concurrent) execution seamlessly.
 
-`run/cli` is an example implementation of such a CLI tool which is based on [spf13/cobra](https://github.com/spf13/cobrahttps://github.com/spf13/viper/) and [spf13/viper](https://github.com/spf13/viper/) along with `run/lib`. This is provided as a reference of how to interact with the API of `run/lib`, but it can be used as a standalone tool.
+`run/cli` is an example implementation of such a CLI tool which is based on [spf13/cobra](https://github.com/spf13/cobra) and [spf13/viper](https://github.com/spf13/viper/) along with `run/lib`. This is provided as a reference of how to interact with the API of `run/lib`, but it can be used as a standalone tool.
 
 `run` is built on top of [gonum](https://www.gonum.org/). Precisely, types, interfaces and functions defined in [gonum/graph](https://github.com/gonum/gonum/tree/master/graph) ([godoc.org/gonum.org/v1/gonum/graph](https://godoc.org/gonum.org/v1/gonum/graph)) are used to manipulate graphs. Therefore, `run` relies on the list of input formats supported by the package. In the examples, [Graphviz](https://www.graphviz.org/)'s [DOT](https://en.wikipedia.org/wiki/DOT_(graph_description_language)) language is used, which is a widespread output format supported by many tools. For example, [lindenb/makefile2graph](https://github.com/lindenb/makefile2graph) allows to analyse makefiles, and [kisielk/godepgraph](https://github.com/kisielk/godepgraph) generates *a dependency graph of Go packages*.
 
