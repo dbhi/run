@@ -9,7 +9,6 @@ import (
 	"strings"
 
 	au "github.com/logrusorgru/aurora"
-	homedir "github.com/mitchellh/go-homedir"
 	v "github.com/spf13/viper"
 	"github.com/umarcor/cobra"
 	lumberjack "gopkg.in/natefinch/lumberjack.v2"
@@ -73,7 +72,7 @@ func initConfig() {
 		v.SetConfigFile(cfgFile)
 	} else {
 		// Find home directory.
-		home, err := homedir.Dir()
+		home, err := os.UserHomeDir()
 		checkErr(err)
 
 		v.AddConfigPath(".")
