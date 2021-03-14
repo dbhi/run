@@ -129,6 +129,7 @@ Use cases for `run` are similar to those for other tools such as:
     - `run` can behave as a frontend/extension to `mage` which:
       - Allows to read add 'target' configurations from other sources at runtime (i.e. DOT graphs or `Taskfile.yml` files).
       - Provide generic functions to execute the targets defined through other sources.
+- [dogtools/dog](https://github.com/dogtools/dog)
 
 Therefore, it can be said that one of the purposes of `run` is to somehow integrate them.
 
