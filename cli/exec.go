@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"io/ioutil"
 
-	"github.com/umarcor/cobra"
 	"github.com/dbhi/run/lib"
+	"github.com/umarcor/cobra"
 )
 
 // execCmd represents the exec command

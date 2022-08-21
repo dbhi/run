@@ -1,9 +1,9 @@
 package main
 
 import (
+	"github.com/dbhi/run/lib"
 	v "github.com/spf13/viper"
 	"github.com/umarcor/cobra"
-	"github.com/dbhi/run/lib"
 )
 
 // listCmd represents the list command
