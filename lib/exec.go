@@ -23,9 +23,7 @@ func ExecCmd(dir, bin string, args, env []string, cmdOut, cmdErr *bytes.Buffer, 
 	cmd := exec.Command(bin, args...)
 
 	cmd.Env = os.Environ()
-	for _, v := range env {
-		cmd.Env = append(cmd.Env, v)
-	}
+	cmd.Env = append(cmd.Env, env...)
 
 	if dir != "" {
 		cmd.Dir = dir
