@@ -9,13 +9,6 @@ import (
 	"os/exec"
 )
 
-func texec(ts []Task) error {
-	for _, t := range ts {
-		fmt.Println(t)
-	}
-	return nil
-}
-
 func ExecTimedCmd(dir, bin string, args, env []string, cmdOut, cmdErr *bytes.Buffer, verbose bool) error {
 	time_path, err := exec.LookPath("time")
 	if err != nil {
