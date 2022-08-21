@@ -47,6 +47,7 @@ func checkErr(err error) {
 	}
 }
 
+/*
 func ExecTimedCmd(bin string, args []string, cmdOut, cmdErr *bytes.Buffer) {
 	time_path, err := exec.LookPath("time")
 	if err != nil {
@@ -54,6 +55,7 @@ func ExecTimedCmd(bin string, args []string, cmdOut, cmdErr *bytes.Buffer) {
 	}
 	ExecCmd(time_path, append([]string{"-v", bin}, args...), cmdOut, cmdErr)
 }
+*/
 
 func ExecCmd(bin string, args []string, cmdOut, cmdErr *bytes.Buffer) {
 	fmt.Println(append([]string{bin}, args...))
