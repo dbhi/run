@@ -4,12 +4,8 @@ import (
 	"github.com/spf13/pflag"
 	v "github.com/spf13/viper"
 
-	"bufio"
-	"bytes"
 	"fmt"
-	"io"
 	"os"
-	"os/exec"
 
 	au "github.com/logrusorgru/aurora"
 )
@@ -55,18 +51,17 @@ func ExecTimedCmd(bin string, args []string, cmdOut, cmdErr *bytes.Buffer) {
 	}
 	ExecCmd(time_path, append([]string{"-v", bin}, args...), cmdOut, cmdErr)
 }
-*/
+
 
 func ExecCmd(bin string, args []string, cmdOut, cmdErr *bytes.Buffer) {
 	fmt.Println(append([]string{bin}, args...))
 	cmd := exec.Command(bin, args...)
 	done := make(chan bool)
-	/*                                          |-----> cmdOut.Write()
-	     |-> .StdoutPipe() -> reader -> scan() -|-> |
-	cmd -|                                          |-> fmt.Printf()
-	     |-> .StderrPipe() -> reader -> scan() -|-> |
-	                                            |-----> cmdErr.Write()
-	*/
+	//                                             |-----> cmdOut.Write()
+	//      |-> .StdoutPipe() -> reader -> scan() -|-> |
+	// cmd -|                                          |-> fmt.Printf()
+	//      |-> .StderrPipe() -> reader -> scan() -|-> |
+	//                                             |-----> cmdErr.Write()
 	for _, v := range []struct {
 		rc  func() (io.ReadCloser, error)
 		buf *bytes.Buffer
@@ -96,3 +91,4 @@ func ExecCmd(bin string, args []string, cmdOut, cmdErr *bytes.Buffer) {
 		<-done
 	}
 }
+*/
