@@ -2,7 +2,7 @@ package lib
 
 import (
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"os"
 	"path"
@@ -41,13 +41,13 @@ B -> E;
 		return nil, err
 	}
 	defer jf.Close()
-	return ioutil.ReadAll(jf)
+	return io.ReadAll(jf)
 }
 
 func WriteGraphToFile(f string, g *dep.DependencyGraph) error {
 	if b := dot.Marshal(g); b != nil {
 		fmt.Printf("Writing graph to '%s'\n", f)
-		return ioutil.WriteFile(f, b, 0644)
+		return os.WriteFile(f, b, 0644)
 	}
 	return fmt.Errorf("Marshal failed for file %s", f)
 }

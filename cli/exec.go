@@ -3,7 +3,7 @@ package main
 import (
 	"bytes"
 	"fmt"
-	"io/ioutil"
+	"io"
 
 	"github.com/dbhi/run/lib"
 	"github.com/umarcor/cobra"
@@ -21,11 +21,11 @@ var execCmd = &cobra.Command{
 
 		checkErr(lib.ExecCmd("", args[0], args[1:], nil, cmdOut, cmdErr, true))
 
-		b, err := ioutil.ReadAll(cmdOut)
+		b, err := io.ReadAll(cmdOut)
 		checkErr(err)
 		fmt.Println("cmdOut:\n", string(b))
 
-		b, err = ioutil.ReadAll(cmdErr)
+		b, err = io.ReadAll(cmdErr)
 		checkErr(err)
 		fmt.Println("cmdErr:\n", string(b))
 
