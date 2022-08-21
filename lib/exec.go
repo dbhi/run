@@ -9,6 +9,7 @@ import (
 	"os/exec"
 )
 
+/*
 func ExecTimedCmd(dir, bin string, args, env []string, cmdOut, cmdErr *bytes.Buffer, verbose bool) error {
 	time_path, err := exec.LookPath("time")
 	if err != nil {
@@ -16,6 +17,7 @@ func ExecTimedCmd(dir, bin string, args, env []string, cmdOut, cmdErr *bytes.Buf
 	}
 	return ExecCmd(dir, time_path, append([]string{"-v", bin}, args...), env, cmdOut, cmdErr, verbose)
 }
+*/
 
 func ExecCmd(dir, bin string, args, env []string, cmdOut, cmdErr *bytes.Buffer, verbose bool) error {
 	cmd := exec.Command(bin, args...)
