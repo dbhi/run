@@ -125,9 +125,9 @@ func (d *DependencyGraph) Induce(ns map[int64]graph.Node) map[int64]*DependencyG
 // graph, where the node can be any vertex (root, leaf or mid). It is possible to
 // traverse the graph forward, in reverse or in both directions. Not that the following
 // contexts will produce a subgraph with a single node:
-//  - a root node with reverse walk only
-//  - a leaf node with forward walk only
-//  - any node with neither forward nor reverse walk. a warning is shown in this case.
+// - a root node with reverse walk only
+// - a leaf node with forward walk only
+// - any node with neither forward nor reverse walk. a warning is shown in this case.
 //
 // Complexity: O(len(ns) * (V + E))
 func (d *DependencyGraph) InduceDir(ns map[int64]graph.Node, fw, rv bool) map[int64]*DependencyGraph {
