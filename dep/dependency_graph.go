@@ -57,10 +57,12 @@ func (d *DependencyGraph) rootsAndLeafs() {
 // cleanRootsAndLeafs sets the internal fields 'roots' and 'leafs' empty.
 //
 // Complexity: O(2)
+/*
 func (d *DependencyGraph) cleanRootsAndLeafs() {
 	d.roots = make(map[int64]graph.Node, 0)
 	d.leafs = make(map[int64]graph.Node, 0)
 }
+*/
 
 // Roots returns a map containing the nodes without incoming edges (i.e. root nodes).
 //
