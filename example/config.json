@@ -1,38 +1,75 @@
 {
   "run": "v0.0.0",
   "graph": "graph.dot",
-  "jobs": [
+  "jobs": {
     "SRC|srcA": {
-      "data": [ "./src/proto/*.c", "./src/proto/*.h" ],
+      "data": [
+        "./src/proto/*.c",
+        "./src/proto/*.h"
+      ]
     },
     "SRC|srcB": {
-      "data": [ "./src/plugin/*" ],
+      "data": [
+        "./src/plugin/*"
+      ]
     },
     "SRC|srcC": {
-      "data": [ "./src/main/*" ],
+      "data": [
+        "./src/main/*"
+      ]
     },
     "SRC|srcDoc": {
-      "data": [ "./doc/*" ],
+      "data": [
+        "./doc/*"
+      ]
     },
     "JOB|getA": {
-        "src": "http://raw.github.com...",
-        "cmd": [
-            "cd ./src/proto",
-            "curl -fsSL {{.sources}} | tar -xzv",
-        ],
-      },
-    "JOB|build": { "cmds": [ "make" ] },
-    "JOB|buildA": { "cmd": [ "make proto", ], },
-    "JOB|buildB": { "cmds": [ "make plugin" ] },
-    "JOB|buildDoc": {
-        "cmds": [
-            "cd ./doc",
-            "hugo -o /tmp/doc/build"
-        ]
+      "src": "http://raw.github.com...",
+      "cmd": [
+        "cd ./src/proto",
+        "curl -fsSL {{.sources}} | tar -xzv"
+      ]
     },
-    "OBJ|objA": { data: [ "/tmp/build/obj/proto.o" ] },
-    "OBJ|objB": { data: [ "/tmp/build/obj/plugin.o" ] },
-    "OBJ|doc": { data: [ "/tmp/doc/build/site" ] },
-    "OBJ|bin":{ data: [ "/tmp/build/bin/main" ] }
-  ]
+    "JOB|build": {
+      "cmds": [
+        "make"
+      ]
+    },
+    "JOB|buildA": {
+      "cmd": [
+        "make proto"
+      ]
+    },
+    "JOB|buildB": {
+      "cmds": [
+        "make plugin"
+      ]
+    },
+    "JOB|buildDoc": {
+      "cmds": [
+        "cd ./doc",
+        "hugo -o /tmp/doc/build"
+      ]
+    },
+    "OBJ|objA": {
+      "data": [
+        "/tmp/build/obj/proto.o"
+      ]
+    },
+    "OBJ|objB": {
+      "data": [
+        "/tmp/build/obj/plugin.o"
+      ]
+    },
+    "OBJ|doc": {
+      "data": [
+        "/tmp/doc/build/site"
+      ]
+    },
+    "OBJ|bin": {
+      "data": [
+        "/tmp/build/bin/main"
+      ]
+    }
+  }
 }
