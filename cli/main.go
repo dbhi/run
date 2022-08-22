@@ -15,7 +15,11 @@ import (
 )
 
 func main() {
-	Execute()
+	// Set custom version template
+	rootCmd.SetVersionTemplate("RUN {{printf \"version %s\" .Version}}\n")
+	fmt.Println(au.Sprintf(au.Cyan("[RUN] a task execution automation package (%s)"), rootCmd.Version))
+	err := rootCmd.Execute()
+	checkErr(err)
 }
 
 // rootCmd represents the base command when called without any subcommands
@@ -35,16 +39,6 @@ in the subgraphs corresponding to the leaf. It can be either of:
 }
 
 var cfgFile string
-
-// Execute adds all child commands to the root command and sets flags appropriately.
-// This is called by main.main(). It only needs to happen once to the rootCmd.
-func Execute() {
-	// Set custom version template
-	rootCmd.SetVersionTemplate("RUN {{printf \"version %s\" .Version}}\n")
-	fmt.Println(au.Sprintf(au.Cyan("[RUN] a task execution automation package (%s)"), rootCmd.Version))
-	err := rootCmd.Execute()
-	checkErr(err)
-}
 
 func init() {
 	cobra.OnInitialize(initConfig)
