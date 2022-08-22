@@ -89,8 +89,8 @@ func InduceSubGraphs(d *dep.DependencyGraph) (map[string]*dep.DependencyGraph, m
 	induce := func(d *dep.DependencyGraph, m map[int64]graph.Node) map[string]*dep.DependencyGraph {
 		o := make(map[string]*dep.DependencyGraph)
 		for k, n := range d.Induce(m) {
-			g := dot.DotGraph{n.DirectedGraph} //nolint:govet
-			x := g.Node(k).(*dot.DotNode).DOTID()
+			g := dot.Graph{n.DirectedGraph} //nolint:govet
+			x := g.Node(k).(*dot.Node).DOTID()
 			o[x] = n
 		}
 		return o
@@ -194,7 +194,7 @@ func GetSubGraph(l, r map[string]*dep.DependencyGraph, a string) (*dep.Dependenc
 		return nil, ""
 	}
 	n := make(map[int64]graph.Node)
-	g := dot.DotGraph{d.DirectedGraph} //nolint:govet
+	g := dot.Graph{d.DirectedGraph} //nolint:govet
 	x := g.GetNodeByDOTID(t)
 	if x == nil {
 		fmt.Printf("node '%s' not found in subgraph for '%s'!\n", t, k)

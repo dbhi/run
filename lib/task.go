@@ -25,7 +25,7 @@ func taskSubgraph(g *dep.DependencyGraph, t string) *dep.DependencyGraph {
 		return g
 	}
 	fmt.Println("Filtering subgraph fot task", t)
-	r := dot.DotGraph{g.DirectedGraph}.GetNodeByDOTID(t)
+	r := dot.Graph{g.DirectedGraph}.GetNodeByDOTID(t)
 	if r == nil {
 		log.Fatal("node %s not found in graph with leafs %s", t, g.Leafs())
 	}
@@ -58,7 +58,7 @@ func GetTaskList(d *dep.DependencyGraph) []string {
 	checkErr(err)
 	o := make([]string, 0)
 	for _, n := range s {
-		x := n.(*dot.DotNode)
+		x := n.(*dot.Node)
 		if a, e := x.Attribute("shape"); e == nil && a == "box" {
 			o = append(o, x.DOTID())
 			continue

@@ -9,52 +9,52 @@ import (
 	"gonum.org/v1/gonum/graph/simple"
 )
 
-// DotGraph ensures dotEdge and DotNode types are created when needed.
-type DotGraph struct {
+// Graph ensures dotEdge and Node types are created when needed.
+type Graph struct {
 	*simple.DirectedGraph
 }
 
 // NewNode returns a new Node to be added to g. The Node contains the attributes.
-func (g DotGraph) NewNode() graph.Node {
-	return &DotNode{Node: g.DirectedGraph.NewNode(), attrs: make(map[string]string)}
+func (g Graph) NewNode() graph.Node {
+	return &Node{Node: g.DirectedGraph.NewNode(), attrs: make(map[string]string)}
 }
 
 // NewNode returns a new Edge to be added to g. The Edge contains the attributes.
-func (g DotGraph) NewEdge(from, to graph.Node) graph.Edge {
+func (g Graph) NewEdge(from, to graph.Node) graph.Edge {
 	return &dotEdge{Edge: g.DirectedGraph.NewEdge(from, to), attrs: make(map[string]string)}
 }
 
 // GetNodeByDOTID gets a Node by it's DOT ID.
-func (g DotGraph) GetNodeByDOTID(DOTID string) graph.Node {
+func (g Graph) GetNodeByDOTID(DOTID string) graph.Node {
 	for _, n := range graph.NodesOf(g.Nodes()) {
-		if n.(*DotNode).DOTID() == DOTID {
+		if n.(*Node).DOTID() == DOTID {
 			return n
 		}
 	}
 	return nil
 }
 
-// DotNode handles basic DOT serialisation and deserialisation
-type DotNode struct {
+// Node handles basic DOT serialisation and deserialisation
+type Node struct {
 	graph.Node
 	dotID string
 	attrs map[string]string
 }
 
 // SetAttribute sets a DOT attribute.
-func (n *DotNode) SetAttribute(attr encoding.Attribute) error {
+func (n *Node) SetAttribute(attr encoding.Attribute) error {
 	n.attrs[attr.Key] = attr.Value
 	return nil
 }
 
 // DOTID gets the DOT attribute.
-func (n *DotNode) DOTID() string { return n.dotID }
+func (n *Node) DOTID() string { return n.dotID }
 
 // SetDOTID sets the DOT ID.
-func (n *DotNode) SetDOTID(id string) { n.dotID = id }
+func (n *Node) SetDOTID(id string) { n.dotID = id }
 
 // Attributes gets the slice of attributes defined for the node.
-func (n *DotNode) Attributes() []encoding.Attribute {
+func (n *Node) Attributes() []encoding.Attribute {
 	attrs := make([]encoding.Attribute, 0, len(n.attrs))
 	for k, v := range n.attrs {
 		attrs = append(attrs, encoding.Attribute{Key: k, Value: v})
@@ -63,7 +63,7 @@ func (n *DotNode) Attributes() []encoding.Attribute {
 }
 
 // Attribute gets a DOT attribute.
-func (n *DotNode) Attribute(key string) (string, error) {
+func (n *Node) Attribute(key string) (string, error) {
 	a, ok := n.attrs[key]
 	if ok {
 		return a, nil
@@ -102,7 +102,7 @@ func (e *dotEdge) ReversedEdge() graph.Edge {
 // *simple.DirectedGraph with edges and nodes containing attributes
 func Unmarshal(b []byte) *simple.DirectedGraph {
 	g := simple.NewDirectedGraph()
-	if err := dot.Unmarshal(b, DotGraph{g}); err != nil {
+	if err := dot.Unmarshal(b, Graph{g}); err != nil {
 		return nil
 	}
 	return g
