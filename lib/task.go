@@ -3,6 +3,7 @@ package lib
 import (
 	"fmt"
 	"log"
+	"strings"
 
 	"github.com/dbhi/run/dep"
 	"github.com/dbhi/run/dot"
@@ -59,11 +60,11 @@ func GetTaskList(d *dep.DependencyGraph) []string {
 	o := make([]string, 0)
 	for _, n := range s {
 		x := n.(*dot.Node)
-		if a, e := x.Attribute("shape"); e == nil && a == "box" {
+		if a, e := x.Attribute("shape"); e == nil && strings.ToLower(a) == "box" {
 			o = append(o, x.DOTID())
 			continue
 		}
-		if a, e := x.Attribute("type"); e == nil && a == "job" {
+		if a, e := x.Attribute("type"); e == nil && strings.ToLower(a) == "job" {
 			o = append(o, x.DOTID())
 		}
 	}
