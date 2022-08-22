@@ -47,7 +47,7 @@ B -> E;
 func WriteGraphToFile(f string, g *dep.DependencyGraph) error {
 	if b := dot.Marshal(g); b != nil {
 		fmt.Printf("Writing graph to '%s'\n", f)
-		return os.WriteFile(f, b, 0644)
+		return os.WriteFile(f, b, 0600)
 	}
 	return fmt.Errorf("Marshal failed for file %s", f)
 }
